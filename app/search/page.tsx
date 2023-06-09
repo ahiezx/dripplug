@@ -60,65 +60,63 @@ export default function Search() {
 
 
   return (
-    <div className="flex flex-col items-center justify-center w-full h-screen py-20 text-center bg-neutral-900">
-      <div className="flex flex-row items-center justify-center w-full py-10 text-center">
-        <div className="flex flex-col items-center justify-center w-1/3">
-          <i className="fad fa-search text-6xl text-green-500 mb-5"></i>
-          <h1 className="text-2xl font-bold mb-3 mt-5 text-white">Search</h1>
-          <p className="text-xl text-gray-400 w-full mb-10">
-            Search for your favorite artists, albums, and songs.
-          </p>
-          <div className="relative w-full">
-            <input
-              type="text"
-              className="w-full h-10 px-3 bg-zinc-100 text-base placeholder-gray-600 focus:shadow-outline text-black outline-none"
-              placeholder="Search..."
-              value={searchTerm.toLocaleLowerCase()}
-              onChange={handleInputChange}
-              style={
-                {
-                    borderTop: "3px solid #22C55E",
-                    boxShadow: "0px 0px 25px 3px rgba(66,206,110,0.3)",
-                }
-              }
-            />
-            {searchResults.length > 0 && (
-              <div className="absolute top-10 left-0 w-full text-black bg-white shadow-lg overflow-hidden">
-                <ul className="divide-y divide-gray-200">
-                  {searchResults.map((result) =>
-                    result.link !== null ? (
-                      <li
-                        key={result.link}
-                        className="py-4 px-5 text-sm hover:bg-gray-200 flex justify-between items-center"
+    <div className="flex flex-col items-center justify-center w-full h-screen py-10 lg:py-20 text-center bg-neutral-900">
+    <div className="flex flex-col items-center justify-center w-full py-5 lg:py-10 text-center">
+      <div className="flex flex-col items-center justify-center w-5/6 lg:w-1/3">
+        <i className="fad fa-search text-4xl lg:text-6xl text-green-500 mb-3 lg:mb-5"></i>
+        <h1 className="text-xl lg:text-2xl font-bold mb-2 lg:mb-3 mt-3 lg:mt-5 text-white">Search</h1>
+        <p className="text-lg lg:text-xl text-gray-400 w-full mb-5 lg:mb-10">
+          Search for your favorite artists, albums, and songs.
+        </p>
+        <div className="relative w-full">
+          <input
+            type="text"
+            className="w-full h-10 px-3 bg-zinc-100 text-base placeholder-gray-600 focus:shadow-outline text-black outline-none"
+            placeholder="Search..."
+            value={searchTerm.toLocaleLowerCase()}
+            onChange={handleInputChange}
+            style={{
+              borderTop: "3px solid #22C55E",
+              boxShadow: "0px 0px 25px 3px rgba(66,206,110,0.3)",
+            }}
+          />
+          {searchResults.length > 0 && (
+            <div className="absolute top-10 left-0 w-full text-black bg-white shadow-lg overflow-hidden">
+              <ul className="divide-y divide-gray-200">
+                {searchResults.map((result) =>
+                  result.link !== null ? (
+                    <li
+                      key={result.id}
+                      className="py-3 lg:py-4 px-4 lg:px-5 text-sm hover:bg-gray-200 flex justify-between items-center"
+                    >
+                      <a
+                        href={"/product/" + result.id}
+                        className="flex justify-between items-center w-full"
+                        target="_blank"
+                        rel="noopener noreferrer"
                       >
-                        <a
-                          href={result.link}
-                          className="flex justify-between items-center w-full"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <span className="font-medium align-left">
-                            {/* escape html */}
-                            {result.name.split('').map((character, index) => (
-                              <span
-                                key={index}
-                                className={searchTerm.includes(character.toLocaleLowerCase()) ? "text-green-600" : ""}
-                              >
-                                {character}
-                              </span>
-                            ))}
-                          </span>
-                          <span className="text-gray-500">~ {result.price}</span>
-                        </a>
-                      </li>
-                    ) : null
-                  )}
-                </ul>
-              </div>
-            )}
-          </div>
+                        <span className="font-medium align-left">
+                          {/* escape html */}
+                          {result.name.split('').map((character, index) => (
+                            <span
+                              key={index}
+                              className={searchTerm.includes(character.toLocaleLowerCase()) ? "text-green-600" : ""}
+                            >
+                              {character}
+                            </span>
+                          ))}
+                        </span>
+                        <span className="text-gray-500">~ {result.price}</span>
+                      </a>
+                    </li>
+                  ) : null
+                )}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
     </div>
+  </div>
   );
 }
