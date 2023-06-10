@@ -5,10 +5,27 @@
 import { useState } from "react";
 import { useEffect } from "react";
 
+// import QCDropDown component from components/qcdropdown.tsx
+
 
 export default function Product({ params }) {
   const [product, setProduct] = useState(null);
   const [images, setImages] = useState(null);
+  let [qcImages, setQcImages] = useState(null);
+
+  let image;
+  let goodsId;
+
+  if(!images) {
+    
+    image = "";
+    
+
+  } else {
+    goodsId = images[0][0]['goodsId'];
+    image = images[1];
+  }
+
 
   useEffect(() => {
     getProductById(params.id)
@@ -19,7 +36,7 @@ export default function Product({ params }) {
   }, [params.id]);
 
   useEffect(() => {
-    if (product && product.link) {
+    if (product && product?.link) {
       const linkParts = product.link.split("/");
       if (linkParts.length >= 4) {
         const linkParam = linkParts[3];
@@ -32,22 +49,40 @@ export default function Product({ params }) {
     }
   }, [product]);
 
-  if (product && !product.name) {
+
+  // getQcImagesRequest using goodsId
+
+  useEffect(() => {
+    if (goodsId) {
+      getQcImagesRequest(goodsId)
+        .then((data) => setQcImages(data))
+        .catch((error) => {
+          // Handle the error
+        });
+    }
+  }, [goodsId]);
+
+
+  // set qcImages to qcImages[0]['photos'] using setQcImages
+
+  if (qcImages) {
+
+    qcImages = qcImages[0]['photos'];
+  }
+
+        
+
+
+
+
+
+  if (product && !product?.name) {
     return <div className="p-5 text-center h-screen flex">
         <span className="my-auto mx-auto text-3xl">Could not resolve product</span>
         </div>;
   }
 
-  let image;
 
-  if(!images) {
-    
-    image = "";
-    
-
-  } else {
-    image = images[0];
-  }
 
   
 
@@ -168,31 +203,22 @@ style={{
     >
     {/* quality check image section */}
     <h1
-    className="text-4xl font-semibold ml-20 mb-6 mt-8 text-left"
+    className="text-4xl font-semibold ml-5 lg:ml-20 mb-6 mt-8 text-left"
     >
       Quality Check Images
     </h1>
 
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-4 lg:px-20">
+    
     {
-  Array.isArray(images) ? (
-    images.map((img, index) => (
-      <div key={index}>
-        {img ? (
-          <img className="w-full h-auto rounded-md shadow-lg" src={img} alt="Product Image" />
-        ) : (
-          <img
-            className="w-full h-auto rounded-md shadow-lg"
-            src="https://cdn.dribbble.com/users/3512533/screenshots/14168376/web_1280___8_4x.jpg"
-            alt="Product Image"
-          />
-        )}
-      </div>
-    ))
-  ) : (
-    <p>No images available</p>
-  )
-}
+      Array.isArray(qcImages) ? (
+        qcImages.map((image, index) => (
+          <img src={image.src} alt="" key={index} className="w-full h-auto rounded-md shadow-md" />
+        ))
+      ) : (
+        <img src="/spinner.svg" alt="" />
+      )
+    }
 
     </div>
 
@@ -214,8 +240,13 @@ const getProductById = async (id) => {
 
 const getImages = async (link) => {
   // get only after https://pandabuy.page.link/
-  console.log(link);
-  const res = await fetch(`http://localhost:9000/qc/${link}`);
+  const res = await fetch(`http://localhost:9000/qc/${link}?all=true`);
   const data = await res.json();
   return data;
 };
+
+const getQcImagesRequest = async (goodsId) => {
+  const res = await fetch(`http://localhost:9000/getqc/${goodsId}`);
+  const data = await res.json();
+  return data;
+}
