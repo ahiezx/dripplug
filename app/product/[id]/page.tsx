@@ -105,9 +105,18 @@ export default function Product({ params }) {
     <main
       style={{
         // linear gradient gray to light gray
-        background: "linear-gradient(180deg, #222 0%, #22C55E 500%)",
+        background: "linear-gradient(360deg, #222 0%, #22C55E 500%)",
       }}
     >
+      <div
+      className="
+      w-full
+      h-auto"
+      style={{
+        backgroundImage: "url('/bgeffect.png')",
+        backgroundRepeat: "repeat-x"
+      }}
+      >
       <div className="container lg:py-10 lg:px-10 mx-auto">
         {product ? (
           <div
@@ -186,7 +195,7 @@ export default function Product({ params }) {
                       </span>
                       <span className="text-gray-300">
                         Regular Price:{" "}
-                        {"$" + convertPrice(product.price).toFixed(2) * 8}
+                        <span className="underline">${convertPrice(product.price).toFixed(2) * 8}</span>
                       </span>
                     </div>
                     <button
@@ -195,7 +204,7 @@ export default function Product({ params }) {
             shadow-md
             "
                     >
-                      Add to Cart
+                      Buy Now <i className="fas fa-shopping-cart"></i>
                     </button>
                   </div>
                 </div>
@@ -226,15 +235,16 @@ export default function Product({ params }) {
               <img
                 src={image.src}
                 alt="x"
-                className="w-full h-auto rounded-md shadow-md h-72 hover:cursor-pointer"
+                className="w-full h-auto rounded-md shadow-md h-64 hover:cursor-pointer"
               />
             // <h1>{JSON.stringify(image)}</h1>
             ) : (
-              <div className="w-full h-72 rounded-md shadow-md flex flex-col items-center justify-center text-gray-400 bg-neutral-800 hover:bg-neutral-700 hover:cursor-pointer">
+              <div className="w-full h-64 rounded-md shadow-md flex flex-col items-center justify-center text-gray-400 bg-neutral-800 hover:bg-neutral-700 hover:cursor-pointer">
                 <span className="text-center text-xs text-green-50 flex flex-col">
                   {images[0][index]?.goodsAttribute
                     .replace(/;/g, "\n")
                     .replace(/:/g, "\n")}
+                    {images[0][index]?.goodsAttribute}
                 </span>
                 <span className="text-green-500 hover:cursor-pointer mt-1">
                   Click to show image
@@ -252,6 +262,7 @@ export default function Product({ params }) {
         ) : (
           <img src="/spinner.svg" alt="" />
         )}
+      </div>
       </div>
     </main>
   );
