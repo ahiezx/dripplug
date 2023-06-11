@@ -11,6 +11,7 @@ export default function Product({ params }) {
   const [product, setProduct] = useState(null);
   const [images, setImages] = useState(null);
   let [qcImages, setQcImages] = useState(null);
+  const [selectedImages, setSelectedImages] = useState([]);
 
   let image;
   let goodsId;
@@ -21,6 +22,16 @@ export default function Product({ params }) {
     goodsId = images[0][0]["goodsId"];
     image = images[1];
   }
+
+  const handleClick = (src: string) => {
+    if (selectedImages.includes(src)) {
+      setSelectedImages(
+        selectedImages.filter((image: string) => image !== src)
+      );
+    } else {
+      setSelectedImages([...selectedImages, src]);
+    }
+  };
 
   useEffect(() => {
     getProductById(params.id)
@@ -204,22 +215,37 @@ export default function Product({ params }) {
               </h1>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-4 lg:px-20">
-                {Array.isArray(qcImages) ? (
-                  qcImages.map((image, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-center" // Center the content horizontally and vertically
-                    >
-                      <img
-                        src={image.src}
-                        alt=""
-                        className="w-full h-auto rounded-md shadow-md"
-                      />
-                    </div>
-                  ))
-                ) : (
-                  <img src="/spinner.svg" alt="" />
-                )}
+              {Array.isArray(qcImages) ? (
+        qcImages.map((image, index) => (
+          <div
+            key={index}
+            className="flex items-center justify-center"
+            onClick={() => handleClick(image.src)} // Handle image click event
+          >
+            {selectedImages.includes(image.src) ? (
+              <img
+                src={image.src}
+                alt="x"
+                className="w-full h-auto rounded-md shadow-md h-72 hover:cursor-pointer"
+              />
+            // <h1>{JSON.stringify(image)}</h1>
+            ) : (
+              <div className="w-full h-72 rounded-md shadow-md flex flex-col items-center justify-center text-gray-400 bg-neutral-800 hover:bg-neutral-700 hover:cursor-pointer">
+                <span className="text-center text-xs text-green-50 flex flex-col">
+                  {images[0][index]?.goodsAttribute
+                    .replace(/;/g, "\n")
+                    .replace(/:/g, "\n")}
+                </span>
+                <span className="text-green-500 hover:cursor-pointer mt-1">
+                  Click to show image
+                </span>
+              </div>
+            )}
+          </div>
+        ))
+      ) : (
+        <img src="/spinner.svg" alt="" />
+      )}
               </div>
             </div>
           </div>
