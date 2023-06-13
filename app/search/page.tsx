@@ -72,17 +72,20 @@ export default function Search() {
           <div className="relative w-full">
             <input
               type="text"
-              className="w-full h-10 px-3 bg-zinc-100 text-base placeholder-gray-600 focus:shadow-outline text-black outline-none"
+              className="w-full h-10 px-3 bg-zinc-100 text-base placeholder-gray-600 focus:shadow-outline text-black outline-none rounded-none"
               placeholder="Search..."
               value={searchTerm.toLocaleLowerCase()}
               onChange={handleInputChange}
               style={{
                 borderTop: "3px solid #22C55E",
-                boxShadow: "0px 0px 25px 3px rgba(66,206,110,0.3)",
+                boxShadow: "0px 0px 4px 3px rgba(66,206,110,0.15)",
+                borderRadius: "0.2rem",
               }}
             />
             {searchResults.length > 0 && (
-              <div className="absolute top-10 left-0 w-full text-black bg-white shadow-lg overflow-hidden">
+              <div className="absolute top-11 left-0 w-full text-black bg-white shadow-lg overflow-hidden"
+              style={{borderRadius: "0.2rem",boxShadow: "0px 0px 5px rgba(255,255,255,0.7)"}}
+              >
                 <ul className="divide-y divide-gray-200">
                   {searchResults.map((result) =>
                     result.link !== null ? (

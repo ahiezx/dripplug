@@ -3,6 +3,67 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+function IconsDropDown() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleIcons = () => {
+    setIsOpen(!isOpen);
+  };
+
+  return (
+    <div className="relative w-auto">
+      <button
+        onClick={toggleIcons}
+        className="px-3 py-2 text-sm font-medium text-green-400 hover:text-neutral-500 w-full  focus:outline-none focus:text-green-400 bg-neutral-900 hover:bg-neutral-900 shadow-md"
+        style={{
+          borderBottom: "#333 1.5px dotted",
+        }}
+      >
+        <i className="fa fa-ellipsis-h"></i>
+      </button>
+      {isOpen && (
+        <div className="absolute right-0 mt-2 w-40 rounded-sm bg-neutral-800 shadow-lg text-white">
+          {/* <a
+            href="/explore"
+            className="block px-5 py-3 text-sm hover:bg-neutral-900 hover:text-green-500"
+          >
+            <i className="text-green-500 fa fa-compass"></i>
+            <span className="mx-2">Explore</span>
+          </a>           */}
+          <a
+            href="/calculator"
+            className="block px-5 py-3 text-sm hover:bg-neutral-900 hover:text-green-500"
+          >
+            <i className="text-green-500 fa fa-calculator"></i>
+            <span className="mx-2">Calculator</span>
+          </a>
+          <a
+            href="/calculator"
+            className="block px-5 py-3 text-sm hover:bg-neutral-900 hover:text-green-500"
+          >
+            <i className="text-green-500 fa fa-boxes"></i>
+            <span className="mx-2">Tracker</span>
+          </a>          
+          {/* <a
+            href="/outfits"
+            className="block px-5 py-3 text-sm hover:bg-neutral-900 hover:text-green-500"
+          >
+            <i className="text-green-500 fa fa-sunglasses"></i>
+            <span className="mx-2">Outfits</span>
+          </a>
+          <a
+            href="/finds"
+            className="block px-5 py-3 text-sm hover:bg-neutral-900 hover:text-green-500"
+          >
+            <i className="text-green-500 fa fa-heart"></i>
+            <span className="mx-2">Best Finds</span>
+          </a> */}
+        </div>
+      )}
+    </div>
+  );
+}
+
 const Navbar = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -32,12 +93,13 @@ const Navbar = () => {
               <div className="flex-shrink-0">
                 {/* Your logo */}
                 <a href="/">
-                  <Image
-                    src="/images/template.png"
+                  <img
+                    src="/images/logo-full3.png"
                     alt="Drip Plug Logo"
-                    width={120}
-                    height={20}
-                    className="select-none"
+                    className="select-none
+                    h-16
+                    w-auto
+                    "
                     draggable={false}
                   />
                 </a>
@@ -46,12 +108,12 @@ const Navbar = () => {
             <div className="hidden md:block">
               <div className="ml-4 flex items-center md:ml-6">
                 {/* Navigation links */}
-                <a
+                {/* <a
                   href="/"
                   className="px-3 py-2 rounded-md text-sm font-medium text-green-400 hover:text-neutral-500 focus:outline-none focus:text-green-400"
                 >
                   Home
-                </a>
+                </a> */}
                 <a
                   href="#"
                   className={`relative px-3 py-2 rounded-md text-sm font-medium text-green-400 hover:text-neutral-500 focus:outline-none focus:text-green-400 ${
@@ -59,7 +121,7 @@ const Navbar = () => {
                   }`}
                   onClick={toggleDropdown}
                 >
-                  Categories
+                  {/* Categories */}
                   {isDropdownOpen && (
                     <div className="fixed left-0 mt-7 shadow-lg bg-neutral-200 text-black w-full md:h-full overflow-auto">
                       <h2
@@ -343,12 +405,54 @@ const Navbar = () => {
                     </div>
                   )}
                 </a>
+                <div className="flex space-x-2 mx-3 pr-3" style={
+                  {
+                    borderRight: '1px solid #22C55E',
+                  }
+                }>
+                  {/* <a href="#" className="block rounded-sm px-5 py-2 text-sm bg-neutral-800 hover:bg-green-700 hover:text-white shadow-md"><i class="text-green-500 fa fa-info-circle"></i> Contact</a> */}
+                  <a
+                  href="/search"
+                  className="block px-5 py-2 text-sm bg-neutral-800 text-green-500 hover:bg-green-700 hover:text-white shadow-md"
+                >
+                  <i className=" fa fa-search"></i>
+                  <span className="mx-2 text-white">Search</span>
+                </a>
                 <a
-                  href="#"
+                  href="/explore"
+                  className="block px-5 py-2 text-sm bg-neutral-800 text-green-500 hover:bg-green-700 hover:text-white shadow-md"
+                >
+                  <i className="fa fa-compass"></i>
+                  <span className="mx-2 text-white">Explore</span>
+                </a>                                  
+                </div>
+                <IconsDropDown />
+                {/* <div className="flex">
+                <a
+                  href="/calculator"
                   className="px-3 py-2 rounded-md text-sm font-medium text-green-400 hover:text-neutral-500 focus:outline-none focus:text-green-400"
                 >
-                  Account
-                </a>
+                  <i className="fa fa-calculator"></i>
+                </a>                            
+                <a
+                  href="/outfits"
+                  className="px-1 py-2 rounded-md text-sm font-medium text-green-400 hover:text-neutral-500 focus:outline-none focus:text-green-400"
+                >
+                  <i className="fa fa-sunglasses"></i>
+                </a>  
+                <a
+                  href="/finds"
+                  className="px-1 py-2 rounded-md text-sm font-medium text-green-400 hover:text-neutral-500 focus:outline-none focus:text-green-400"
+                >
+                  <i className="fa fa-heart"></i>
+                </a>  
+                <a
+                  href="/explore"
+                  className="px-1 py-2 rounded-md text-sm font-medium text-green-400 hover:text-neutral-500 focus:outline-none focus:text-green-400"
+                >
+                  <i className="fa fa-compass"></i>
+                </a>  
+                </div>                                           */}
                 {/* More navigation links */}
               </div>
             </div>

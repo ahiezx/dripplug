@@ -6,7 +6,7 @@ export default function Home() {
       <main className="flex flex-col items-center justify-center w-full h-screen py-20 text-center bg-gradient-to-b bg-green-900">
         <div className="animate-pulse">
           <img
-            src="/logo.png"
+            src="/logo2.png"
             alt="Drip Plug Logo"
             width={300}
             height={300}
