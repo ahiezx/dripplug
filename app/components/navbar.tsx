@@ -173,7 +173,7 @@ const Navbar = () => {
                               >
                                 Misc & Accessories
                               </a>
-                              <h4 class="my-2">Shoes & Sneakers: </h4>
+                              <h4 className="my-2">Shoes & Sneakers: </h4>
                               <a
                                 href="#"
                                 className="block text-neutral-800 shadow-sm text-xs hover:bg-green-500 mb-0.5 px-2 py-2 text-sm font-medium bg-neutral-300"
@@ -410,7 +410,7 @@ const Navbar = () => {
                     borderRight: '1px solid #22C55E',
                   }
                 }>
-                  {/* <a href="#" className="block rounded-sm px-5 py-2 text-sm bg-neutral-800 hover:bg-green-700 hover:text-white shadow-md"><i class="text-green-500 fa fa-info-circle"></i> Contact</a> */}
+                  {/* <a href="#" className="block rounded-sm px-5 py-2 text-sm bg-neutral-800 hover:bg-green-700 hover:text-white shadow-md"><i className="text-green-500 fa fa-info-circle"></i> Contact</a> */}
                   <a
                   href="/search"
                   className="block px-5 py-2 text-sm bg-neutral-800 text-green-500 hover:bg-green-700 hover:text-white shadow-md"
