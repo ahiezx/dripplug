@@ -23,15 +23,7 @@ async function getProductById(id: string) {
 export default function ProductComponent({ params }: any) {
   const [product, setProduct] = useState(defaultProduct);
 
-  if (product && !product?.name) {
-    return (
-      <div className="p-5 text-center h-screen flex">
-        <span className="my-auto mx-auto text-3xl">
-          Could not resolve product
-        </span>
-      </div>
-    );
-  }
+
 
   useEffect(() => {
     getProductById(params.id)

@@ -1,4 +1,6 @@
-import { useState, useEffect } from "react";
+/* eslint-disable @next/next/no-img-element */
+import { useState, useEffect, FC, ReactNode } from "react";
+import PropTypes from "prop-types";
 
 interface Product {
   name: string;
@@ -7,20 +9,15 @@ interface Product {
   views: string;
   affiliate: string;
 }
-const defaultProduct: Product = {
-  name: "",
-  price: "",
-  link: "",
-  views: "",
-  affiliate: "",
-};
-interface QCImages {
+interface QCImage {
   goodsImg: string;
   goodsId: string;
   goodsAttribute: string;
   skuId: string;
+  src: string;
+  photos: [];
 }
-const defaultQCImages: QCImages[] = [
+const defaultQCImages: QCImage[] = [
   {
     goodsImg:
       "https://si.geilicdn.com/wdseller317841466-53dc00000184e295ac0e0a20e672_1170_1170.jpg",
@@ -81,6 +78,10 @@ const defaultQCImages: QCImages[] = [
   // "https://qc.pandabuy.com/qc?g=5939526695",
 ];
 
+interface Props {
+  product: Product;
+}
+
 const defaultImages = [[{ goodsId: "", goodsAttribute: "" }], []];
 
 async function getImages(link: string) {
@@ -97,9 +98,9 @@ async function getQcImagesRequest(goodsId: string | number) {
   return data;
 }
 
-const Product = ({ product }: any) => {
+const Product = ({ product }: Props) => {
   const [product_] = useState<Product>(product);
-  let [qcImages, setQcImages] = useState<QCImages[]>(defaultQCImages);
+  let [qcImages, setQcImages] = useState<QCImage[]>(defaultQCImages);
 
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
 
@@ -120,14 +121,16 @@ const Product = ({ product }: any) => {
       broken = true;
     }
   }
+
   // convert product price chinese yuan to usd
-  function convertPrice(price: string) {
-    // Check if the price is in Chinese Yuan
+  function convertPrice(price: string): string {
     if (price.includes("¥")) {
       // Extract the numeric value from the string
       const numericValue = Number(price.replace(/[^0-9.-]+/g, ""));
+
       // Convert the price to another currency (e.g., USD) using the appropriate conversion rate
       const convertedPrice = numericValue * 0.15;
+
       return convertedPrice.toFixed(2);
     }
 
@@ -135,7 +138,7 @@ const Product = ({ product }: any) => {
     return price.replace("$", "").replace(" ", "");
   }
 
-  const handleClick = (src: string) => {
+  function handleClick(src: string): void {
     if (selectedImages.includes(src)) {
       setSelectedImages(
         selectedImages.filter((image: string) => image !== src)
@@ -143,12 +146,12 @@ const Product = ({ product }: any) => {
     } else {
       setSelectedImages([...selectedImages, src]);
     }
-  };
+  }
 
-  // getQcImagesRequest using goodsId
 
   useEffect(() => {
     if (goodsId) {
+      // getQcImagesRequest using goodsId
       getQcImagesRequest(goodsId)
         .then((data) => setQcImages(data))
         .catch((error) => {
@@ -156,13 +159,13 @@ const Product = ({ product }: any) => {
         });
     }
   }, [goodsId]);
-  // set qcImages to qcImages[0]['photos'] using setQcImages
 
+  // set qcImages to qcImages[0]['photos'] using setQcImages
   if (qcImages) {
     // qcImages = qcImages[0]['photos'];
 
     const combinedPhotos = qcImages.reduce(
-      (accumulator, item) => accumulator.concat(item.photos),
+      (accumulator, item: QCImage) => accumulator.concat(item.photos),
       []
     );
 
@@ -187,6 +190,14 @@ const Product = ({ product }: any) => {
 
   return (
     <div className="container lg:py-10 lg:px-10 mx-auto">
+      {product && !product?.name ? (
+        <div className="p-5 text-center h-screen flex">
+          <span className="my-auto mx-auto text-3xl">
+            Could not resolve product
+          </span>
+        </div>
+      ) : null}
+
       {product_ ? (
         <div
           className="min-h-screen shadow-xl rounded-md"
@@ -248,25 +259,25 @@ const Product = ({ product }: any) => {
                       </span>
                     </span>
                   </div>
-                  {/* {broken ? (
-                        <div className="">
-                          <h1 className="text-orange-500 text-center mb-4">
-                            <i className="fas fa-info-circle mr-2"></i>
-                            This product_ may not exist, please confirm the link.
-                          </h1>
-                          <a href={product_.affiliate} target="_blank">
-                            <div className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-green w-full shadow-md text-center">
-                              Confirm <i className="fas fa-arrow-right"></i>
-                            </div>
-                          </a>
+                  {broken ? (
+                    <div className="">
+                      <h1 className="text-orange-500 text-center mb-4">
+                        <i className="fas fa-info-circle mr-2"></i>
+                        This product_ may not exist, please confirm the link.
+                      </h1>
+                      <a href={product_.affiliate} target="_blank">
+                        <div className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-green w-full shadow-md text-center">
+                          Confirm <i className="fas fa-arrow-right"></i>
                         </div>
-                      ) : (
-                        <a href={product_.affiliate} target="_blank">
-                          <div className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-green w-full shadow-md text-center">
-                            View Product <i className="fas fa-arrow-right"></i>
-                          </div>
-                        </a>
-                      )} */}
+                      </a>
+                    </div>
+                  ) : (
+                    <a href={product_.affiliate} target="_blank">
+                      <div className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-green w-full shadow-md text-center">
+                        View Product <i className="fas fa-arrow-right"></i>
+                      </div>
+                    </a>
+                  )}
                 </div>
               </div>
             </div>
@@ -290,9 +301,9 @@ const Product = ({ product }: any) => {
                   <div
                     key={index}
                     className="flex items-center justify-center"
-                    onClick={() => handleClick(image.src)} // Handle image click event
+                    onClick={() => handleClick(image?.src)}
                   >
-                    {selectedImages.includes(image.src) ? (
+                    {selectedImages.includes(image?.src) ? (
                       <img
                         src={image.src}
                         alt="x"
